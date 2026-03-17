@@ -16,12 +16,12 @@ import project4b from "@/assets/project-4b.jpg";
 import project4c from "@/assets/project-4c.jpg";
 
 const projects = [
-  {
-    title: "Project Name",
-    index: "01",
-    role: "Brand Identity",
-    images: [project1a, project1b, project1c]
-  },
+{
+  title: "Project Name",
+  index: "01",
+  role: "Brand Identity",
+  images: [project1a, project1b, project1c]
+},
 {
   title: "Project Name",
   index: "02",
@@ -51,7 +51,7 @@ const Index = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-          className="text-5xl md:text-8xl font-bold tracking-tighter">Pequeno
+          className="text-5xl font-bold tracking-tighter md:text-lg">Pequeno
 
 
         </motion.h1>
@@ -77,8 +77,8 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.3 }}
         className="px-8 md:px-16 pb-24">
         
-        <p className="text-sm text-muted-foreground uppercase tracking-tight font-sans font-normal">
-          Selected Works 2020—2024
+        <p className="text-muted-foreground uppercase tracking-tight font-sans font-normal text-xs">MULTIDISCIPLINARY DESIGN STUDIO
+
         </p>
       </motion.div>
 
