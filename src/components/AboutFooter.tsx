@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const AboutFooter = () => {
   return (
-    <footer className="px-8 md:px-16 pt-32 pb-16">
+    <footer className="px-8 md:px-16 pt-32 pb-16 bg-gradient-to-t from-yellow-300 to-background">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
