@@ -16,12 +16,12 @@ import project4b from "@/assets/project-4b.jpg";
 import project4c from "@/assets/project-4c.jpg";
 
 const projects = [
-{
-  title: "Project Name",
-  index: "01",
-  role: "PROJECT TYPE",
-  images: [project1a, project1b, project1c]
-},
+  {
+    title: "Project Name",
+    index: "01",
+    role: "Brand Identity",
+    images: [project1a, project1b, project1c]
+  },
 {
   title: "Project Name",
   index: "02",
