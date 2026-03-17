@@ -64,9 +64,9 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
       <div className="flex justify-between items-end px-8 md:px-16 mb-6">
         <div>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tighter">{title}</h2>
-          {role && <p className="font-mono text-sm text-muted-foreground mt-1 uppercase tracking-tight">{role}</p>}
+          {role && <p className="text-sm text-muted-foreground mt-1 uppercase tracking-tight font-sans font-normal">{role}</p>}
         </div>
-        <span className="font-mono text-sm text-muted-foreground">
+        <span className="text-muted-foreground font-sans font-normal text-xs">
           {String(currentIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
         </span>
       </div>
@@ -78,56 +78,56 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setShowCursor(true)}
         onMouseLeave={() => setShowCursor(false)}
-        onClick={() => (isRightHalf ? handleNext() : handlePrev())}
-      >
+        onClick={() => isRightHalf ? handleNext() : handlePrev()}>
+        
         {/* Custom cursor */}
         <AnimatePresence>
-          {showCursor && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              className="pointer-events-none absolute z-50 flex items-center justify-center w-16 h-16 bg-foreground rounded-full"
-              style={{
-                left: cursorPos.x - 32,
-                top: cursorPos.y - 32,
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            >
+          {showCursor &&
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            className="pointer-events-none absolute z-50 flex items-center justify-center w-16 h-16 bg-foreground rounded-full"
+            style={{
+              left: cursorPos.x - 32,
+              top: cursorPos.y - 32
+            }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}>
+            
               <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="hsl(var(--background))"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ transform: isRightHalf ? "none" : "rotate(180deg)" }}
-              >
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="hsl(var(--background))"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ transform: isRightHalf ? "none" : "rotate(180deg)" }}>
+              
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </motion.div>
-          )}
+          }
         </AnimatePresence>
 
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16"
-        >
-          {images.map((src, i) => (
-            <div
-              key={i}
-              className="w-[85vw] shrink-0 snap-start aspect-[16/10] bg-muted overflow-hidden"
-            >
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16">
+          
+          {images.map((src, i) =>
+          <div
+            key={i}
+            className="w-[85vw] shrink-0 snap-start aspect-[16/10] bg-muted overflow-hidden">
+            
               <img
-                src={src}
-                className="w-full h-full object-cover transition-all duration-700"
-                alt={`${title} ${i + 1}`}
-                loading="lazy"
-              />
+              src={src}
+              className="w-full h-full object-cover transition-all duration-700"
+              alt={`${title} ${i + 1}`}
+              loading="lazy" />
+            
             </div>
-          ))}
+          )}
           {/* Peek spacer */}
           <div className="w-[10vw] shrink-0" />
         </div>
@@ -135,18 +135,18 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
 
       {/* Navigation dots */}
       <div className="flex gap-2 px-8 md:px-16 mt-4">
-        {images.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => { setCurrentIndex(i); scrollToIndex(i); }}
-            className={`h-0.5 transition-all duration-300 ${
-              i === currentIndex ? "w-8 bg-foreground" : "w-4 bg-muted-foreground/30"
-            }`}
-          />
-        ))}
+        {images.map((_, i) =>
+        <button
+          key={i}
+          onClick={() => {setCurrentIndex(i);scrollToIndex(i);}}
+          className={`h-0.5 transition-all duration-300 ${
+          i === currentIndex ? "w-8 bg-foreground" : "w-4 bg-muted-foreground/30"}`
+          } />
+
+        )}
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default ProjectCarousel;

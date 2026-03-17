@@ -16,31 +16,31 @@ import project4b from "@/assets/project-4b.jpg";
 import project4c from "@/assets/project-4c.jpg";
 
 const projects = [
-  {
-    title: "Christie's",
-    index: "01",
-    role: "Freelance Designer",
-    images: [project1a, project1b, project1c],
-  },
-  {
-    title: "V&A Dundee",
-    index: "02",
-    role: "Brand Identity",
-    images: [project2a, project2b, project2c],
-  },
-  {
-    title: "RJH Architecture",
-    index: "03",
-    role: "Art Direction",
-    images: [project3a, project3b, project3c],
-  },
-  {
-    title: "Omni Group",
-    index: "04",
-    role: "Digital Experience",
-    images: [project4a, project4b, project4c],
-  },
-];
+{
+  title: "Christie's",
+  index: "01",
+  role: "Freelance Designer",
+  images: [project1a, project1b, project1c]
+},
+{
+  title: "V&A Dundee",
+  index: "02",
+  role: "Brand Identity",
+  images: [project2a, project2b, project2c]
+},
+{
+  title: "RJH Architecture",
+  index: "03",
+  role: "Art Direction",
+  images: [project3a, project3b, project3c]
+},
+{
+  title: "Omni Group",
+  index: "04",
+  role: "Digital Experience",
+  images: [project4a, project4b, project4c]
+}];
+
 
 const Index = () => {
   return (
@@ -51,16 +51,16 @@ const Index = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-          className="text-5xl md:text-8xl font-bold tracking-tighter"
-        >
-          Studio
+          className="text-5xl md:text-8xl font-bold tracking-tighter">Pequeno
+
+
         </motion.h1>
         <motion.nav
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex gap-6 font-mono text-sm uppercase tracking-tight pt-4"
-        >
+          className="flex gap-6 text-sm uppercase tracking-tight pt-4 font-sans font-medium">
+          
           <a href="#work" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
             Work
           </a>
@@ -75,32 +75,32 @@ const Index = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="px-8 md:px-16 pb-24"
-      >
-        <p className="font-mono text-sm text-muted-foreground uppercase tracking-tight">
+        className="px-8 md:px-16 pb-24">
+        
+        <p className="text-sm text-muted-foreground uppercase tracking-tight font-sans font-normal">
           Selected Works 2020—2024
         </p>
       </motion.div>
 
       {/* Projects */}
       <div id="work">
-        {projects.map((project) => (
-          <ProjectCarousel
-            key={project.index}
-            title={project.title}
-            index={project.index}
-            role={project.role}
-            images={project.images}
-          />
-        ))}
+        {projects.map((project) =>
+        <ProjectCarousel
+          key={project.index}
+          title={project.title}
+          index={project.index}
+          role={project.role}
+          images={project.images} />
+
+        )}
       </div>
 
       {/* About */}
       <div id="about">
         <AboutFooter />
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;

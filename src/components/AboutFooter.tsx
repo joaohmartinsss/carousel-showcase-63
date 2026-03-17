@@ -8,24 +8,24 @@ const AboutFooter = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
         viewport={{ once: true, margin: "-100px" }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32"
-      >
+        className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32">
+        
         {/* About */}
         <div>
-          <h3 className="font-mono text-sm uppercase tracking-tight text-muted-foreground mb-6">About</h3>
-          <p className="text-lg leading-relaxed max-w-[50ch]">
-            An independent design studio focused on brand identity, art direction, 
-            and digital experiences for cultural institutions, architects, and luxury brands. 
-            We build systems that are precise, restrained, and enduring.
+          <h3 className="text-sm uppercase tracking-tight text-muted-foreground mb-6 font-sans font-normal">About</h3>
+          <p className="text-lg leading-relaxed max-w-[50ch]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+
+
           </p>
         </div>
 
         {/* Contact */}
         <div>
-          <h3 className="font-mono text-sm uppercase tracking-tight text-muted-foreground mb-6">Contact</h3>
+          <h3 className="text-sm uppercase tracking-tight text-muted-foreground mb-6 font-sans font-normal">Contact</h3>
           <div className="space-y-3 text-lg">
-            <a href="mailto:hello@studio.com" className="block hover:text-muted-foreground transition-colors duration-300">
-              hello@studio.com
+            <a href="mailto:hello@studio.com" className="block hover:text-muted-foreground transition-colors duration-300">hello@pequeno.studio
+
             </a>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="block hover:text-muted-foreground transition-colors duration-300">
               Instagram
@@ -42,17 +42,17 @@ const AboutFooter = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
         viewport={{ once: true }}
-        className="mt-32 flex justify-between items-end"
-      >
-        <span className="font-mono text-sm text-muted-foreground uppercase tracking-tight">
-          © 2024
+        className="mt-32 flex justify-between items-end font-sans">
+        
+        <span className="text-sm text-muted-foreground uppercase tracking-tight font-sans">© 2026
+
         </span>
-        <span className="font-mono text-sm text-muted-foreground uppercase tracking-tight">
+        <span className="text-sm text-muted-foreground uppercase tracking-tight font-sans">
           Selected Works
         </span>
       </motion.div>
-    </footer>
-  );
+    </footer>);
+
 };
 
 export default AboutFooter;
