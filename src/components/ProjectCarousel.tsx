@@ -63,8 +63,8 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
       {/* Header */}
       <div className="flex justify-between items-end px-8 md:px-16 mb-6">
         <div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tighter">{title}</h2>
-          {role && <p className="text-sm text-muted-foreground mt-1 uppercase tracking-tight font-sans font-normal">{role}</p>}
+          <h2 className="text-3xl tracking-tighter font-semibold md:text-base">{title}</h2>
+          {role && <p className="text-muted-foreground mt-1 uppercase tracking-tight font-sans font-normal text-xs">{role}</p>}
         </div>
         <span className="text-muted-foreground font-sans font-normal text-xs">
           {String(currentIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
