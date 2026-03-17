@@ -17,9 +17,9 @@ import project4c from "@/assets/project-4c.jpg";
 
 const projects = [
 {
-  title: "Project Name",
+  title: "Más Group",
   index: "01",
-  role: "Brand Identity",
+  role: "BRAND IDENTITY",
   images: [project1a, project1b, project1c]
 },
 {
