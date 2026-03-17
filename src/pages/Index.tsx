@@ -17,25 +17,25 @@ import project4c from "@/assets/project-4c.jpg";
 
 const projects = [
 {
-  title: "Christie's",
+  title: "Project Name",
   index: "01",
-  role: "Freelance Designer",
+  role: "PROJECT TYPE",
   images: [project1a, project1b, project1c]
 },
 {
-  title: "V&A Dundee",
+  title: "Project Name",
   index: "02",
   role: "Brand Identity",
   images: [project2a, project2b, project2c]
 },
 {
-  title: "RJH Architecture",
+  title: "Project Name",
   index: "03",
   role: "Art Direction",
   images: [project3a, project3b, project3c]
 },
 {
-  title: "Omni Group",
+  title: "Project Name",
   index: "04",
   role: "Digital Experience",
   images: [project4a, project4b, project4c]
