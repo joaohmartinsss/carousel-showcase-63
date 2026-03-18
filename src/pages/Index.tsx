@@ -44,8 +44,25 @@ const projects = [
 const Index = () => {
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
+      {/* Mobile nav - above logo */}
+      <motion.nav
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="md:hidden px-8 pt-8 pb-4 flex justify-between text-xs uppercase tracking-tight font-sans font-normal text-muted-foreground">
+        <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
+          hey@pequeno.studio
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+          Instagram
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+          LinkedIn
+        </a>
+      </motion.nav>
+
       {/* Header */}
-      <header className="px-8 md:px-16 pt-12 pb-4 flex justify-between items-start">
+      <header className="px-8 md:px-16 pt-4 md:pt-12 pb-4 flex justify-between items-start">
         <div className="flex flex-col">
           <motion.img
             src={logo}
@@ -63,11 +80,12 @@ const Index = () => {
             Pequeno
           </motion.h1>
         </div>
+        {/* Desktop nav */}
         <motion.nav
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex gap-4 text-xs uppercase tracking-tight pt-4 font-sans font-normal text-muted-foreground">
+          className="hidden md:flex gap-4 text-xs uppercase tracking-tight pt-4 font-sans font-normal text-muted-foreground">
           <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
             hey@pequeno.studio
           </a>
@@ -87,7 +105,6 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.3 }}
         className="px-8 md:px-16 pb-24">
         <p className="text-xs text-muted-foreground leading-relaxed max-w-[50ch]">From Portuguese: small. Not a measure of ambition, but of approach: focused, precise, nimble. A design practice dedicated to shaping thoughtful and beautiful brand identities. Working closely with founders and with strategy agencies that need sharp, reliable execution. From São Paulo, working worldwide.
-
         </p>
       </motion.div>
 
@@ -105,7 +122,7 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="px-8 md:px-16 py-16">
-        <div className="flex justify-between items-end font-sans">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-end font-sans gap-4">
           <span className="text-xs text-muted-foreground uppercase tracking-tight">© 2026 Pequeno Studio — based in São Paulo, working worldwide</span>
           <div className="flex gap-4 text-xs uppercase tracking-tight text-muted-foreground">
             <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
