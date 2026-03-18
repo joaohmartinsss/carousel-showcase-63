@@ -57,8 +57,8 @@ const Index = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex gap-4 text-xs uppercase tracking-tight pt-4 font-sans font-normal text-muted-foreground">
-          <a href="mailto:hello@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
-            hello@pequeno.studio
+          <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
+            hey@pequeno.studio
           </a>
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
             Instagram
@@ -95,8 +95,11 @@ const Index = () => {
       {/* Footer */}
       <footer className="px-8 md:px-16 py-16">
         <div className="flex justify-between items-end font-sans">
-          <span className="text-sm text-muted-foreground uppercase tracking-tight">© 2026</span>
-          <div className="flex gap-6 text-sm text-muted-foreground">
+          <span className="text-xs text-muted-foreground uppercase tracking-tight">© 2026 Pequeno Studio — based in São Paulo, working worldwide</span>
+          <div className="flex gap-4 text-xs uppercase tracking-tight text-muted-foreground">
+            <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
+              hey@pequeno.studio
+            </a>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
               Instagram
             </a>

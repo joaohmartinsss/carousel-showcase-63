@@ -24,8 +24,7 @@ const AboutFooter = () => {
         <div>
           <h3 className="text-sm uppercase tracking-tight text-muted-foreground mb-6 font-sans font-normal">Contact</h3>
           <div className="space-y-3 text-lg">
-            <a href="mailto:hello@studio.com" className="block hover:text-muted-foreground transition-colors duration-300">hello@pequeno.studio
-
+            <a href="mailto:hey@pequeno.studio" className="block hover:text-muted-foreground transition-colors duration-300">hey@pequeno.studio
             </a>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="block hover:text-muted-foreground transition-colors duration-300">
               Instagram
