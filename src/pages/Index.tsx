@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import ProjectCarousel from "@/components/ProjectCarousel";
-import AboutFooter from "@/components/AboutFooter";
 
 import project1a from "@/assets/project-1a.jpg";
 import project1b from "@/assets/project-1b.jpg";
@@ -41,44 +40,40 @@ const projects = [
   images: [project4a, project4b, project4c]
 }];
 
-
 const Index = () => {
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
       {/* Header */}
-      <header className="px-8 md:px-16 pt-12 pb-8 flex justify-between items-start">
+      <header className="px-8 md:px-16 pt-12 pb-4 flex justify-between items-start">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-          className="text-5xl font-bold tracking-tighter md:text-lg">Pequeno
-
-
+          className="text-5xl font-bold tracking-tighter md:text-lg">
+          Pequeno
         </motion.h1>
         <motion.nav
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex gap-6 text-sm uppercase tracking-tight pt-4 font-sans font-medium">
-          
-          <a href="#work" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-            Work
-          </a>
-          <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-            About
+          <a href="mailto:hello@pequeno.studio" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
+            hello@pequeno.studio
           </a>
         </motion.nav>
       </header>
 
-      {/* Subtitle */}
+      {/* About + Subtitle */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
         className="px-8 md:px-16 pb-24">
-        
-        <p className="text-muted-foreground uppercase tracking-tight font-sans font-normal text-xs">MULTIDISCIPLINARY DESIGN STUDIO
-
+        <p className="text-muted-foreground uppercase tracking-tight font-sans font-normal text-xs mb-6">
+          MULTIDISCIPLINARY DESIGN STUDIO
+        </p>
+        <p className="text-xs text-muted-foreground leading-relaxed max-w-[50ch]">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
       </motion.div>
 
@@ -91,16 +86,25 @@ const Index = () => {
           index={project.index}
           role={project.role}
           images={project.images} />
-
         )}
       </div>
 
-      {/* About */}
-      <div id="about">
-        <AboutFooter />
-      </div>
-    </div>);
-
+      {/* Footer */}
+      <footer className="px-8 md:px-16 py-16">
+        <div className="flex justify-between items-end font-sans">
+          <span className="text-sm text-muted-foreground uppercase tracking-tight">© 2026</span>
+          <div className="flex gap-6 text-sm text-muted-foreground">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+              Instagram
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 };
 
 export default Index;
