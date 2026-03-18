@@ -43,9 +43,11 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (rect) {
-      setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+      const x = e.clientX - rect.left;
+      setCursorPos({ x, y: e.clientY - rect.top });
+      setDirection(x > rect.width / 2 ? "right" : "left");
     }
-  }, []);
+  }, [setDirection]);
 
   // Update currentIndex on scroll
   useEffect(() => {
