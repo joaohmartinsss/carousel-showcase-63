@@ -56,9 +56,15 @@ const Index = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex gap-6 text-sm uppercase tracking-tight pt-4 font-sans font-medium">
-          <a href="mailto:hello@pequeno.studio" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
+          className="flex gap-4 text-xs uppercase tracking-tight pt-4 font-sans font-normal text-muted-foreground">
+          <a href="mailto:hello@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
             hello@pequeno.studio
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+            Instagram
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+            LinkedIn
           </a>
         </motion.nav>
       </header>
