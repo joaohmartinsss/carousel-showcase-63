@@ -26,10 +26,10 @@ const AboutFooter = () => {
           <div className="space-y-3 text-lg">
             <a href="mailto:hey@pequeno.studio" className="block hover:text-muted-foreground transition-colors duration-300">hey@pequeno.studio
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="block hover:text-muted-foreground transition-colors duration-300">
+            <a href="https://www.instagram.com/joaohmartinss/" target="_blank" rel="noopener noreferrer" className="block hover:text-muted-foreground transition-colors duration-300">
               Instagram
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="block hover:text-muted-foreground transition-colors duration-300">
+            <a href="https://www.linkedin.com/in/joaohenriquems/" target="_blank" rel="noopener noreferrer" className="block hover:text-muted-foreground transition-colors duration-300">
               LinkedIn
             </a>
           </div>

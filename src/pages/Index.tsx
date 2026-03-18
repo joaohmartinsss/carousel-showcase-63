@@ -128,10 +128,10 @@ const Index = () => {
             <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
               hey@pequeno.studio
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+            <a href="https://www.instagram.com/joaohmartinss/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
               Instagram
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
+            <a href="https://www.linkedin.com/in/joaohenriquems/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
               LinkedIn
             </a>
           </div>
