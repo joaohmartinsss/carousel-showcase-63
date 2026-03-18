@@ -28,9 +28,9 @@ const projects = [
   images: [project2a, project2b, project2c]
 },
 {
-  title: "Project Name",
+  title: "Entelo",
   index: "03",
-  role: "Art Direction",
+  role: "BRAND IDENTITY",
   images: [project3a, project3b, project3c]
 },
 {
