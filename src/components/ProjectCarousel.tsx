@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useCursorDirection } from "./CursorContext";
 
 interface ProjectCarouselProps {
   title: string;
@@ -16,6 +17,7 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const { setDirection } = useCursorDirection();
 
   const scrollToIndex = useCallback((i: number) => {
     const el = scrollRef.current;
@@ -41,9 +43,11 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (rect) {
-      setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+      const x = e.clientX - rect.left;
+      setCursorPos({ x, y: e.clientY - rect.top });
+      setDirection(x > rect.width / 2 ? "right" : "left");
     }
-  }, []);
+  }, [setDirection]);
 
   // Update currentIndex on scroll
   useEffect(() => {
@@ -84,6 +88,7 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
           ref={containerRef}
           className="relative"
           onMouseMove={!isMobile ? handleMouseMove : undefined}
+          onMouseLeave={!isMobile ? () => setDirection(null) : undefined}
           onClick={handleContainerClick}>
 
           <div

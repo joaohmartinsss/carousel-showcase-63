@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useCursorDirection } from "./CursorContext";
 
 const CustomCursor = () => {
   const isMobile = useIsMobile();
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
+  const { direction } = useCursorDirection();
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     setPos({ x: e.clientX, y: e.clientY });
@@ -16,33 +18,25 @@ const CustomCursor = () => {
   useEffect(() => {
     if (isMobile) return;
     window.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", () => setVisible(false));
-    document.addEventListener("mouseenter", () => setVisible(true));
+    const onLeave = () => setVisible(false);
+    const onEnter = () => setVisible(true);
+    document.addEventListener("mouseleave", onLeave);
+    document.addEventListener("mouseenter", onEnter);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseleave", () => setVisible(false));
-      document.removeEventListener("mouseenter", () => setVisible(true));
+      document.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("mouseenter", onEnter);
     };
   }, [isMobile, handleMouseMove]);
 
   if (isMobile || !visible) return null;
 
-  // SVG viewBox is 329x329, center is at 164.44, 164.44
-  // Left eye center: 164.44, 164.44 (radius ~22.36)
-  // Right eye center: 268.872, 164.44 (radius ~22.36)
-  // Distance between eye centers: 104.432
-  // Eye radius: 22.363
-
-  const svgCenter = { x: 164.44, y: 164.44 };
+  // Face geometry in SVG coordinates (viewBox 329x329)
+  const faceCenter = 164.44;
   const eyeRadius = 22.363;
-  const maxPupilShift = eyeRadius * 0.4; // pupils move within eye bounds
+  const eyeHalfGap = 52.216; // half the distance between eye centers
 
-  // Calculate direction from cursor center to actual mouse (for eye tracking)
-  // We use the screen-level mouse position relative to cursor center
-  const dx = mousePos.x - pos.x;
-  const dy = mousePos.y - pos.y;
-  // Since the cursor IS at the mouse, we use a global reference instead
-  // Track based on mouse position relative to viewport center
+  // Default: eyes track mouse relative to viewport center
   const viewCenterX = typeof window !== "undefined" ? window.innerWidth / 2 : 0;
   const viewCenterY = typeof window !== "undefined" ? window.innerHeight / 2 : 0;
   const gdx = mousePos.x - viewCenterX;
@@ -50,20 +44,31 @@ const CustomCursor = () => {
   const dist = Math.sqrt(gdx * gdx + gdy * gdy) || 1;
   const maxDist = Math.sqrt(viewCenterX * viewCenterX + viewCenterY * viewCenterY) || 1;
   const normalizedDist = Math.min(dist / maxDist, 1);
-  
-  // Direction unit vector
   const ux = gdx / dist;
   const uy = gdy / dist;
-  
-  // Pupil offset - keep eyes horizontally aligned (only shift X uniformly, Y uniformly)
-  const shiftX = ux * maxPupilShift * normalizedDist;
-  const shiftY = uy * maxPupilShift * normalizedDist;
 
-  // Eye positions in SVG coordinates
-  const leftEye = { cx: 164.44 + shiftX, cy: 164.44 + shiftY };
-  const rightEye = { cx: 268.872 + shiftX, cy: 164.44 + shiftY };
+  // Max shift for the eye pair center from face center
+  const maxShift = 45;
 
-  const size = 64; // same as carousel arrow circle (w-16 h-16)
+  let eyePairCenterX: number;
+  let eyePairCenterY = faceCenter; // always vertically centered
+
+  if (direction === "left") {
+    // Eyes shifted to left side of face
+    eyePairCenterX = faceCenter - maxShift;
+  } else if (direction === "right") {
+    // Eyes shifted to right side of face
+    eyePairCenterX = faceCenter + maxShift;
+  } else {
+    // Default: subtle tracking based on mouse position
+    const subtleShift = ux * maxShift * 0.3 * normalizedDist;
+    eyePairCenterX = faceCenter + subtleShift;
+  }
+
+  const leftEye = { cx: eyePairCenterX - eyeHalfGap, cy: eyePairCenterY };
+  const rightEye = { cx: eyePairCenterX + eyeHalfGap, cy: eyePairCenterY };
+
+  const size = 64;
 
   return (
     <div
@@ -92,12 +97,14 @@ const CustomCursor = () => {
           cy={leftEye.cy}
           r={eyeRadius}
           fill="hsl(var(--background))"
+          style={{ transition: "cx 0.25s ease-out" }}
         />
         <circle
           cx={rightEye.cx}
           cy={rightEye.cy}
           r={eyeRadius}
           fill="hsl(var(--background))"
+          style={{ transition: "cx 0.25s ease-out" }}
         />
       </svg>
     </div>
