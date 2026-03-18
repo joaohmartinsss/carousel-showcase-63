@@ -34,9 +34,9 @@ const projects = [
   images: [project3a, project3b, project3c]
 },
 {
-  title: "Project Name",
+  title: "Tino",
   index: "04",
-  role: "Digital Experience",
+  role: "BRAND IDENTITY",
   images: [project4a, project4b, project4c]
 }];
 
