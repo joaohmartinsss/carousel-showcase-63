@@ -88,6 +88,7 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
           ref={containerRef}
           className="relative"
           onMouseMove={!isMobile ? handleMouseMove : undefined}
+          onMouseLeave={!isMobile ? () => setDirection(null) : undefined}
           onClick={handleContainerClick}>
 
           <div
