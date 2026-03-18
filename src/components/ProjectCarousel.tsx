@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProjectCarouselProps {
   title: string;
@@ -14,6 +15,8 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [showCursor, setShowCursor] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const scrollToIndex = useCallback((i: number) => {
     const el = scrollRef.current;
@@ -58,95 +61,132 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
 
   const isRightHalf = cursorPos.x > (containerRef.current?.offsetWidth || 0) / 2;
 
+  const handleContainerClick = useCallback(() => {
+    if (isMobile) return; // no arrow navigation on mobile
+    isRightHalf ? handleNext() : handlePrev();
+  }, [isMobile, isRightHalf, handleNext, handlePrev]);
+
   return (
-    <section className="w-full mb-32 md:mb-40">
-      {/* Header */}
-      <div className="flex justify-between items-end px-8 md:px-16 mb-6">
-        <div>
-          <h2 className="tracking-tighter font-semibold md:text-base text-sm">{title}</h2>
-          {role && <p className="text-muted-foreground mt-1 uppercase tracking-tight font-sans font-normal text-xs">{role}</p>}
+    <>
+      <section className="w-full mb-32 md:mb-40">
+        {/* Header */}
+        <div className="flex justify-between items-end px-8 md:px-16 mb-6">
+          <div>
+            <h2 className="tracking-tighter font-semibold md:text-base text-sm">{title}</h2>
+            {role && <p className="text-muted-foreground mt-1 uppercase tracking-tight font-sans font-normal text-xs">{role}</p>}
+          </div>
+          <span className="text-muted-foreground font-sans font-normal text-xs">
+            {String(currentIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
+          </span>
         </div>
-        <span className="text-muted-foreground font-sans font-normal text-xs">
-          {String(currentIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
-        </span>
-      </div>
 
-      {/* Carousel */}
-      <div
-        ref={containerRef}
-        className="relative cursor-none"
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setShowCursor(true)}
-        onMouseLeave={() => setShowCursor(false)}
-        onClick={() => isRightHalf ? handleNext() : handlePrev()}>
-        
-        {/* Custom cursor */}
-        <AnimatePresence>
-          {showCursor &&
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="pointer-events-none absolute z-50 flex items-center justify-center w-16 h-16 bg-foreground rounded-full"
-            style={{
-              left: cursorPos.x - 32,
-              top: cursorPos.y - 32
-            }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}>
-            
-              <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="hsl(var(--background))"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ transform: isRightHalf ? "none" : "rotate(180deg)" }}>
-              
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </motion.div>
-          }
-        </AnimatePresence>
-
+        {/* Carousel */}
         <div
-          ref={scrollRef}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16">
+          ref={containerRef}
+          className={isMobile ? "relative" : "relative cursor-none"}
+          onMouseMove={!isMobile ? handleMouseMove : undefined}
+          onMouseEnter={!isMobile ? () => setShowCursor(true) : undefined}
+          onMouseLeave={!isMobile ? () => setShowCursor(false) : undefined}
+          onClick={handleContainerClick}>
           
-          {images.map((src, i) =>
-          <div
-            key={i}
-            className="w-[85vw] shrink-0 snap-start bg-muted">
-            
-              <img
-              src={src}
-              className="w-full h-auto block transition-all duration-700"
-              alt={`${title} ${i + 1}`}
-              loading="lazy" />
-            
-            </div>
+          {/* Custom cursor - desktop only */}
+          {!isMobile && (
+            <AnimatePresence>
+              {showCursor &&
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                className="pointer-events-none absolute z-50 flex items-center justify-center w-16 h-16 bg-foreground rounded-full"
+                style={{
+                  left: cursorPos.x - 32,
+                  top: cursorPos.y - 32
+                }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}>
+                
+                  <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="hsl(var(--background))"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ transform: isRightHalf ? "none" : "rotate(180deg)" }}>
+                  
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </motion.div>
+              }
+            </AnimatePresence>
           )}
-          {/* Peek spacer */}
-          <div className="w-[10vw] shrink-0" />
+
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16">
+            
+            {images.map((src, i) =>
+            <div
+              key={i}
+              className="w-[85vw] shrink-0 snap-start bg-muted"
+              onClick={(e) => {
+                if (isMobile) {
+                  e.stopPropagation();
+                  setLightboxSrc(src);
+                }
+              }}>
+              
+                <img
+                src={src}
+                className="w-full h-auto block transition-all duration-700"
+                alt={`${title} ${i + 1}`}
+                loading="lazy" />
+              
+              </div>
+            )}
+            {/* Peek spacer */}
+            <div className="w-[10vw] shrink-0" />
+          </div>
         </div>
-      </div>
 
-      {/* Navigation dots */}
-      <div className="flex gap-2 px-8 md:px-16 mt-4">
-        {images.map((_, i) =>
-        <button
-          key={i}
-          onClick={() => {setCurrentIndex(i);scrollToIndex(i);}}
-          className={`h-0.5 transition-all duration-300 ${
-          i === currentIndex ? "w-8 bg-foreground" : "w-4 bg-muted-foreground/30"}`
-          } />
+        {/* Navigation dots */}
+        <div className="flex gap-2 px-8 md:px-16 mt-4">
+          {images.map((_, i) =>
+          <button
+            key={i}
+            onClick={() => {setCurrentIndex(i);scrollToIndex(i);}}
+            className={`h-0.5 transition-all duration-300 ${
+            i === currentIndex ? "w-8 bg-foreground" : "w-4 bg-muted-foreground/30"}`
+            } />
 
+          )}
+        </div>
+      </section>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxSrc && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] bg-background/95 flex items-center justify-center p-4"
+            onClick={() => setLightboxSrc(null)}>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              src={lightboxSrc}
+              alt={title}
+              className="max-w-full max-h-full object-contain" />
+          </motion.div>
         )}
-      </div>
-    </section>);
-
+      </AnimatePresence>
+    </>
+  );
 };
 
 export default ProjectCarousel;
