@@ -47,6 +47,11 @@
     @apply bg-background text-foreground;
     font-family: var(--font-main);
   }
+  @media (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
+  }
 }
 
 @layer utilities {

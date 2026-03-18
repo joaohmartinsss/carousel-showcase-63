@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import ProjectCarousel from "@/components/ProjectCarousel";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 
 import project1a from "@/assets/project-1a.jpg";
 import project1b from "@/assets/project-1b.jpg";

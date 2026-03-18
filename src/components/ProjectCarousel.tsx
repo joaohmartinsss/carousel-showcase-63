@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProjectCarouselProps {
@@ -13,7 +13,6 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [showCursor, setShowCursor] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const isMobile = useIsMobile();
@@ -83,44 +82,9 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
         {/* Carousel */}
         <div
           ref={containerRef}
-          className={isMobile ? "relative" : "relative cursor-none"}
+          className="relative"
           onMouseMove={!isMobile ? handleMouseMove : undefined}
-          onMouseEnter={!isMobile ? () => setShowCursor(true) : undefined}
-          onMouseLeave={!isMobile ? () => setShowCursor(false) : undefined}
           onClick={handleContainerClick}>
-          
-          {/* Custom cursor - desktop only */}
-          {!isMobile && (
-            <AnimatePresence>
-              {showCursor &&
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                className="pointer-events-none absolute z-50 flex items-center justify-center w-16 h-16 bg-foreground rounded-full"
-                style={{
-                  left: cursorPos.x - 32,
-                  top: cursorPos.y - 32
-                }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}>
-                
-                  <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="hsl(var(--background))"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ transform: isRightHalf ? "none" : "rotate(180deg)" }}>
-                  
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </motion.div>
-              }
-            </AnimatePresence>
-          )}
 
           <div
             ref={scrollRef}
