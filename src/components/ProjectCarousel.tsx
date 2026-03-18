@@ -17,6 +17,7 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const { setDirection } = useCursorDirection();
 
   const scrollToIndex = useCallback((i: number) => {
     const el = scrollRef.current;
