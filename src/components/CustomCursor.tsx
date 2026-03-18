@@ -68,7 +68,8 @@ const CustomCursor = () => {
   const leftEye = { cx: eyePairCenterX - eyeHalfGap, cy: eyePairCenterY };
   const rightEye = { cx: eyePairCenterX + eyeHalfGap, cy: eyePairCenterY };
 
-  const size = 64;
+  const isOnCarousel = direction !== null;
+  const size = isOnCarousel ? 64 : 16;
 
   return (
     <div
@@ -78,12 +79,12 @@ const CustomCursor = () => {
         top: pos.y - size / 2,
         width: size,
         height: size,
-        transition: "left 0.05s linear, top 0.05s linear",
+        transition: "width 0.3s cubic-bezier(0.4,0,0.2,1), height 0.3s cubic-bezier(0.4,0,0.2,1), left 0.05s linear, top 0.05s linear",
       }}
     >
       <svg
-        width={size}
-        height={size}
+        width="100%"
+        height="100%"
         viewBox="0 0 329 329"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -92,20 +93,24 @@ const CustomCursor = () => {
           d="M164.44 0C255.258 0.000181425 328.88 73.6228 328.88 164.44C328.88 255.258 255.258 328.88 164.44 328.88C73.6228 328.88 0.000181472 255.258 0 164.44C0 73.6227 73.6227 0 164.44 0Z"
           fill="hsl(var(--foreground))"
         />
-        <circle
-          cx={leftEye.cx}
-          cy={leftEye.cy}
-          r={eyeRadius}
-          fill="hsl(var(--background))"
-          style={{ transition: "cx 0.25s ease-out" }}
-        />
-        <circle
-          cx={rightEye.cx}
-          cy={rightEye.cy}
-          r={eyeRadius}
-          fill="hsl(var(--background))"
-          style={{ transition: "cx 0.25s ease-out" }}
-        />
+        {isOnCarousel && (
+          <>
+            <circle
+              cx={leftEye.cx}
+              cy={leftEye.cy}
+              r={eyeRadius}
+              fill="hsl(var(--background))"
+              style={{ transition: "cx 0.25s ease-out" }}
+            />
+            <circle
+              cx={rightEye.cx}
+              cy={rightEye.cy}
+              r={eyeRadius}
+              fill="hsl(var(--background))"
+              style={{ transition: "cx 0.25s ease-out" }}
+            />
+          </>
+        )}
       </svg>
     </div>
   );
