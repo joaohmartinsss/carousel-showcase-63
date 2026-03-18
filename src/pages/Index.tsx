@@ -57,8 +57,8 @@ const Index = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex gap-4 text-xs uppercase tracking-tight pt-4 font-sans font-normal text-muted-foreground">
-          <a href="mailto:hello@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
-            hello@pequeno.studio
+          <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
+            hey@pequeno.studio
           </a>
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
             Instagram
