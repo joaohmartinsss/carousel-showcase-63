@@ -118,11 +118,11 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
           {images.map((src, i) =>
           <div
             key={i}
-            className="w-[85vw] shrink-0 snap-start aspect-[16/10] bg-muted overflow-hidden">
+            className="w-[85vw] shrink-0 snap-start bg-muted">
             
               <img
               src={src}
-              className="w-full h-full object-cover transition-all duration-700"
+              className="w-full h-auto block transition-all duration-700"
               alt={`${title} ${i + 1}`}
               loading="lazy" />
             
