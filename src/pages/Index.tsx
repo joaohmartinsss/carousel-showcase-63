@@ -49,7 +49,7 @@ const Index = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-          className="text-5xl font-bold tracking-tighter md:text-lg">
+          className="text-5xl font-bold tracking-tighter md:text-xl">
           Pequeno
         </motion.h1>
         <motion.nav
@@ -109,8 +109,8 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
