@@ -53,8 +53,8 @@ const Index = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-            className="h-8 w-8 md:h-4 md:w-4 mb-1"
-          />
+            className="h-8 w-8 md:h-4 md:w-4 mb-1" />
+          
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,8 +86,8 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
         className="px-8 md:px-16 pb-24">
-        <p className="text-xs text-muted-foreground leading-relaxed max-w-[50ch]">
-          From Portuguese, meaning small. Not a measure of ambition, but of approach: focused, precise, nimble. A design practice dedicated to shaping clear, enduring brand identities. Working closely with founders or in sync with agencies that need sharp, reliable execution. Moving fluidly between one-off projects and long-term collaborations, with a focus on clarity, consistency, and quiet precision.
+        <p className="text-xs text-muted-foreground leading-relaxed max-w-[50ch]">From Portuguese: small. Not a measure of ambition, but of approach: focused, precise, nimble. A design practice dedicated to shaping thoughtful and beautiful brand identities. Working closely with founders and with strategy agencies that need sharp, reliable execution. From São Paulo, working worldwide.
+
         </p>
       </motion.div>
 
