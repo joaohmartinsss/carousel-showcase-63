@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import ProjectCarousel from "@/components/ProjectCarousel";
+import logo from "@/assets/logo.png";
 
 import project1a from "@/assets/project-1a.jpg";
 import project1b from "@/assets/project-1b.jpg";
@@ -45,13 +46,23 @@ const Index = () => {
     <div className="w-full max-w-[100vw] overflow-x-hidden">
       {/* Header */}
       <header className="px-8 md:px-16 pt-12 pb-4 flex justify-between items-start">
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-          className="text-5xl font-bold tracking-tighter md:text-xl">
-          Pequeno
-        </motion.h1>
+        <div className="flex flex-col">
+          <motion.img
+            src={logo}
+            alt="Pequeno logo"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+            className="h-8 w-8 md:h-4 md:w-4 mb-1"
+          />
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+            className="text-5xl font-bold tracking-tighter md:text-xl">
+            Pequeno
+          </motion.h1>
+        </div>
         <motion.nav
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
