@@ -194,11 +194,11 @@ const PulgaTetris = ({ open, onClose }: PulgaTetrisProps) => {
         ctx.fillStyle = 'rgba(255,255,255,0.82)';
         ctx.fillRect(0, 0, CW, CH);
         ctx.fillStyle = '#000';
-        ctx.font = 'bold 18px monospace';
+        ctx.font = '500 11px Inter, system-ui, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('game over', CW / 2, CH / 2 - 12);
-        ctx.font = '12px monospace';
-        ctx.fillText('click to restart', CW / 2, CH / 2 + 12);
+        ctx.fillText('GAME OVER', CW / 2, CH / 2 - 10);
+        ctx.font = '400 9px Inter, system-ui, sans-serif';
+        ctx.fillText('CLICK TO RESTART', CW / 2, CH / 2 + 10);
       }
     }
 
@@ -293,15 +293,20 @@ const PulgaTetris = ({ open, onClose }: PulgaTetrisProps) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative bg-white border border-border shadow-lg"
+            className="relative"
           >
-            <button
-              onClick={onClose}
-              className="absolute -top-10 right-0 p-1 text-muted-foreground hover:text-foreground transition-colors duration-200"
-              style={{ cursor: 'default' }}
-            >
-              <X size={20} strokeWidth={1.5} />
-            </button>
+            <div className="absolute -top-10 left-0 right-0 flex items-center justify-between">
+              <p className="text-[9px] uppercase tracking-tight text-muted-foreground font-sans">
+                ← → move &nbsp; ↑ rotate &nbsp; ↓ descend &nbsp; space drop
+              </p>
+              <button
+                onClick={onClose}
+                className="p-1 text-muted-foreground hover:text-foreground transition-colors duration-200"
+                style={{ cursor: 'default' }}
+              >
+                <X size={20} strokeWidth={1.5} />
+              </button>
+            </div>
             <canvas ref={canvasRef} style={{ width: CW, height: CH, display: 'block' }} />
           </motion.div>
         </motion.div>
