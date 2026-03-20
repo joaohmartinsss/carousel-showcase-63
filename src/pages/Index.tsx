@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import logo from "@/assets/logo.svg";
+import calendarIcon from "@/assets/calendar.svg";
 
 import project1a from "@/assets/project-1a.jpg";
 import project1b from "@/assets/project-1b.jpg";
@@ -59,6 +60,10 @@ const Index = () => {
         <a href="https://www.linkedin.com/in/joaohenriquems/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
           LinkedIn
         </a>
+        <a href="https://cal.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300 inline-flex items-center gap-1">
+          <img src={calendarIcon} alt="" className="h-3 w-3" />
+          Book a Call
+        </a>
       </motion.nav>
 
       {/* Header */}
@@ -94,6 +99,10 @@ const Index = () => {
           </a>
           <a href="https://www.linkedin.com/in/joaohenriquems/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
             LinkedIn
+          </a>
+          <a href="https://cal.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300 inline-flex items-center gap-1">
+            <img src={calendarIcon} alt="" className="h-3 w-3" />
+            Book a Call
           </a>
         </motion.nav>
       </header>
@@ -133,6 +142,10 @@ const Index = () => {
             </a>
             <a href="https://www.linkedin.com/in/joaohenriquems/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
               LinkedIn
+            </a>
+            <a href="https://cal.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300 inline-flex items-center gap-1">
+              <img src={calendarIcon} alt="" className="h-3 w-3" />
+              Book a Call
             </a>
           </div>
         </div>
