@@ -54,9 +54,6 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
         className="md:hidden px-8 pt-8 pb-4 flex justify-between text-xs uppercase tracking-tight font-sans font-normal text-muted-foreground">
-        <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
-          hey@pequeno.studio
-        </a>
         <a href="https://www.instagram.com/joaohmartinss/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
           Instagram
         </a>
@@ -96,9 +93,6 @@ const Index = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="hidden md:flex gap-4 text-xs uppercase tracking-tight pt-4 font-sans font-normal text-muted-foreground">
-          <a href="mailto:hey@pequeno.studio" className="hover:text-foreground transition-colors duration-300">
-            hey@pequeno.studio
-          </a>
           <a href="https://www.instagram.com/joaohmartinss/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
             Instagram
           </a>
@@ -147,10 +141,6 @@ const Index = () => {
             </a>
             <a href="https://www.linkedin.com/in/joaohenriquems/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
               LinkedIn
-            </a>
-            <a href="https://cal.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300 inline-flex items-center gap-1">
-              <img src={calendarIcon} alt="" className="h-3 w-3" />
-              Book a Call
             </a>
           </div>
         </div>
