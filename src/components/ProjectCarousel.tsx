@@ -136,14 +136,16 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
         {/* Carousel */}
         <div
           ref={containerRef}
-          className="relative"
+          className="relative select-none"
           onMouseMove={!isMobile ? handleMouseMove : undefined}
-          onMouseLeave={!isMobile ? () => setDirection(null) : undefined}
+          onMouseDown={!isMobile ? handleMouseDown : undefined}
+          onMouseLeave={!isMobile ? () => { setDirection(null); handleMouseUp(); } : undefined}
           onClick={handleContainerClick}>
 
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16">
+            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16"
+            style={{ cursor: isMobile ? undefined : 'grab' }}>
             
             {images.map((src, i) =>
             <div
