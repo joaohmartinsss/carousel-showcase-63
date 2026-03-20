@@ -16,8 +16,14 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
+  const scrollStartLeft = useRef(0);
+  const hasDragged = useRef(false);
   const isMobile = useIsMobile();
   const { setDirection } = useCursorDirection();
+
+  const isAtLastItem = currentIndex >= images.length - 1;
 
   const scrollToIndex = useCallback((i: number) => {
     const el = scrollRef.current;
@@ -41,19 +47,55 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
   }, [currentIndex, scrollToIndex]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    // Handle drag
+    if (isDragging.current && scrollRef.current) {
+      const dx = e.clientX - dragStartX.current;
+      if (Math.abs(dx) > 5) hasDragged.current = true;
+      scrollRef.current.scrollLeft = scrollStartLeft.current - dx;
+    }
+
     const rect = containerRef.current?.getBoundingClientRect();
     if (rect) {
       const x = e.clientX - rect.left;
       setCursorPos({ x, y: e.clientY - rect.top });
-      setDirection(x > rect.width / 2 ? "right" : "left");
+      // Don't show right arrow on last item
+      if (isAtLastItem && x > rect.width / 2) {
+        setDirection(null);
+      } else {
+        setDirection(x > rect.width / 2 ? "right" : "left");
+      }
     }
-  }, [setDirection]);
+  }, [setDirection, isAtLastItem]);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (isMobile) return;
+    isDragging.current = true;
+    hasDragged.current = false;
+    dragStartX.current = e.clientX;
+    scrollStartLeft.current = scrollRef.current?.scrollLeft || 0;
+    e.preventDefault();
+  }, [isMobile]);
+
+  const handleMouseUp = useCallback(() => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    // Snap to nearest slide
+    const el = scrollRef.current;
+    if (el && hasDragged.current) {
+      const childWidth = (el.children[0] as HTMLElement)?.offsetWidth || 1;
+      const nearest = Math.round(el.scrollLeft / childWidth);
+      const clamped = Math.max(0, Math.min(nearest, images.length - 1));
+      setCurrentIndex(clamped);
+      scrollToIndex(clamped);
+    }
+  }, [images.length, scrollToIndex]);
 
   // Update currentIndex on scroll
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
     const handleScroll = () => {
+      if (isDragging.current) return;
       const scrollLeft = el.scrollLeft;
       const childWidth = (el.children[0] as HTMLElement)?.offsetWidth || 1;
       setCurrentIndex(Math.round(scrollLeft / childWidth));
@@ -62,12 +104,20 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
     return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Global mouseup listener for drag release
+  useEffect(() => {
+    const onUp = () => { if (isDragging.current) handleMouseUp(); };
+    window.addEventListener("mouseup", onUp);
+    return () => window.removeEventListener("mouseup", onUp);
+  }, [handleMouseUp]);
+
   const isRightHalf = cursorPos.x > (containerRef.current?.offsetWidth || 0) / 2;
 
   const handleContainerClick = useCallback(() => {
-    if (isMobile) return; // no arrow navigation on mobile
+    if (isMobile || hasDragged.current) return;
+    if (isRightHalf && isAtLastItem) return; // no forward click on last item
     isRightHalf ? handleNext() : handlePrev();
-  }, [isMobile, isRightHalf, handleNext, handlePrev]);
+  }, [isMobile, isRightHalf, isAtLastItem, handleNext, handlePrev]);
 
   return (
     <>
@@ -86,14 +136,16 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
         {/* Carousel */}
         <div
           ref={containerRef}
-          className="relative"
+          className="relative select-none"
           onMouseMove={!isMobile ? handleMouseMove : undefined}
-          onMouseLeave={!isMobile ? () => setDirection(null) : undefined}
+          onMouseDown={!isMobile ? handleMouseDown : undefined}
+          onMouseLeave={!isMobile ? () => { setDirection(null); handleMouseUp(); } : undefined}
           onClick={handleContainerClick}>
 
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16">
+            className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pl-8 md:pl-16"
+            style={{ cursor: isMobile ? undefined : 'grab' }}>
             
             {images.map((src, i) =>
             <div
