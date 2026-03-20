@@ -155,6 +155,7 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      <PulgaTetris open={showGame} onClose={() => setShowGame(false)} />
     </div>);
 
 };
