@@ -60,6 +60,10 @@ const Index = () => {
         <a href="https://www.linkedin.com/in/joaohenriquems/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300">
           LinkedIn
         </a>
+        <a href="https://cal.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors duration-300 inline-flex items-center gap-1">
+          <img src={calendarIcon} alt="" className="h-3 w-3" />
+          Book a Call
+        </a>
       </motion.nav>
 
       {/* Header */}
