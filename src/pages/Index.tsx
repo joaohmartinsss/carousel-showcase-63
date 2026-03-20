@@ -45,6 +45,7 @@ const projects = [
 }];
 
 const Index = () => {
+  const [showGame, setShowGame] = useState(false);
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
       {/* Mobile nav - above logo */}
