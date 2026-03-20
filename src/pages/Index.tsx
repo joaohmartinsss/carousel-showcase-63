@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
+import PulgaTetris from "@/components/PulgaTetris";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import logo from "@/assets/logo.svg";
 import calendarIcon from "@/assets/calendar.svg";
@@ -43,6 +45,7 @@ const projects = [
 }];
 
 const Index = () => {
+  const [showGame, setShowGame] = useState(false);
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
       {/* Mobile nav - above logo */}
@@ -72,6 +75,8 @@ const Index = () => {
           <motion.img
             src={logo}
             alt="Pequeno logo"
+            onClick={() => setShowGame(true)}
+            style={{ cursor: 'default' }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
@@ -150,6 +155,7 @@ const Index = () => {
           </div>
         </div>
       </footer>
+      <PulgaTetris open={showGame} onClose={() => setShowGame(false)} />
     </div>);
 
 };
