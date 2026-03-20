@@ -194,11 +194,11 @@ const PulgaTetris = ({ open, onClose }: PulgaTetrisProps) => {
         ctx.fillStyle = 'rgba(255,255,255,0.82)';
         ctx.fillRect(0, 0, CW, CH);
         ctx.fillStyle = '#000';
-        ctx.font = 'bold 18px monospace';
+        ctx.font = '500 11px Inter, system-ui, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('game over', CW / 2, CH / 2 - 12);
-        ctx.font = '12px monospace';
-        ctx.fillText('click to restart', CW / 2, CH / 2 + 12);
+        ctx.fillText('GAME OVER', CW / 2, CH / 2 - 10);
+        ctx.font = '400 9px Inter, system-ui, sans-serif';
+        ctx.fillText('CLICK TO RESTART', CW / 2, CH / 2 + 10);
       }
     }
 
