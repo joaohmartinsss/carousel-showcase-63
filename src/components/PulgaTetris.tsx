@@ -38,7 +38,7 @@ function normalizeOffset(cells: number[][]) {
   return cells.map(([r, c]) => [r - minR, c - minC]);
 }
 
-const PulgaTetris = ({ open, onClose }: PulgaTetrisProps) => {
+const PulgaTetris = ({ open, onClose, inline = false }: PulgaTetrisProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<{
     board: boolean[][];
