@@ -1,6 +1,70 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import PulgaTetris from "@/components/PulgaTetris";
+import logo from "@/assets/logo.svg";
+
+// ============================================================
+// V0 — Landing page (logo + about + tetris)
+// ============================================================
+
+const Index = () => {
+  const [showGame, setShowGame] = useState(true);
+
+  return (
+    <div className="w-full min-h-screen flex flex-col items-center justify-center px-8">
+      {/* Logo + Title */}
+      <div className="flex flex-col items-center mb-6">
+        <motion.img
+          src={logo}
+          alt="Pequeno logo"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+          className="h-4 w-4 mb-1"
+        />
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+          className="text-xl font-bold tracking-tighter"
+        >
+          Pequeno
+        </motion.h1>
+      </div>
+
+      {/* About */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="text-xs text-muted-foreground leading-relaxed max-w-[50ch] text-center mb-12"
+      >
+        From Portuguese: small. Not a measure of ambition, but of approach: focused, precise, nimble. A design practice dedicated to shaping thoughtful and beautiful brand identities. Working closely with founders and with strategy agencies that need sharp, reliable execution. From São Paulo, working worldwide.
+      </motion.p>
+
+      {/* Tetris — always visible, centered */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="w-full flex justify-center"
+      >
+        <PulgaTetris open={showGame} onClose={() => setShowGame(false)} />
+      </motion.div>
+    </div>
+  );
+};
+
+export default Index;
+
+// ============================================================
+// V1 — Full portfolio site (HIDDEN, NOT DELETED)
+// Uncomment the code below and comment out V0 above to restore.
+// ============================================================
+/*
+import { useState } from "react";
+import { motion } from "framer-motion";
+import PulgaTetris from "@/components/PulgaTetris";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import logo from "@/assets/logo.svg";
 import calendarIcon from "@/assets/calendar.svg";
@@ -44,11 +108,10 @@ const projects = [
   images: [project4a, project4b, project4c]
 }];
 
-const Index = () => {
+const IndexV1 = () => {
   const [showGame, setShowGame] = useState(false);
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
-      {/* Mobile nav - above logo */}
       <motion.nav
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -66,7 +129,6 @@ const Index = () => {
         </a>
       </motion.nav>
 
-      {/* Header */}
       <header className="px-8 md:px-16 pt-4 md:pt-12 pb-4 flex justify-between items-start">
         <div className="flex flex-col">
           <motion.img
@@ -78,7 +140,6 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
             className="h-4 w-4 mb-1" />
-          
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,7 +148,6 @@ const Index = () => {
             Pequeno
           </motion.h1>
         </div>
-        {/* Desktop nav */}
         <motion.nav
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -106,7 +166,6 @@ const Index = () => {
         </motion.nav>
       </header>
 
-      {/* About + Subtitle */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -116,7 +175,6 @@ const Index = () => {
         </p>
       </motion.div>
 
-      {/* Projects */}
       <div id="work">
         {projects.map((project) =>
         <ProjectCarousel
@@ -128,7 +186,6 @@ const Index = () => {
         )}
       </div>
 
-      {/* Footer */}
       <footer className="px-8 md:px-16 py-16">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end font-sans gap-4">
           <span className="text-xs text-muted-foreground uppercase tracking-tight">© 2026 Pequeno Studio — based in São Paulo, working worldwide</span>
@@ -146,8 +203,9 @@ const Index = () => {
         </div>
       </footer>
       <PulgaTetris open={showGame} onClose={() => setShowGame(false)} />
-    </div>);
-
+    </div>
+  );
 };
 
-export default Index;
+export default IndexV1;
+*/
