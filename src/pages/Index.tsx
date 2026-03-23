@@ -49,7 +49,7 @@ const Index = () => {
         transition={{ duration: 0.6, delay: 0.5 }}
         className="w-full flex justify-center"
       >
-        <PulgaTetris open={showGame} onClose={() => setShowGame(false)} />
+        <PulgaTetris open={showGame} onClose={() => setShowGame(false)} inline />
       </motion.div>
     </div>
   );
