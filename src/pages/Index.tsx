@@ -11,46 +11,51 @@ const Index = () => {
   const [showGame, setShowGame] = useState(true);
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center px-8">
-      {/* Logo + Title */}
-      <div className="flex flex-col items-center mb-6">
-        <motion.img
-          src={logo}
-          alt="Pequeno logo"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-          className="h-4 w-4 mb-1"
-        />
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
-          className="text-xl font-bold tracking-tighter"
-        >
-          Pequeno
-        </motion.h1>
-      </div>
+    <div className="w-full max-w-[100vw] overflow-x-hidden min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="px-8 md:px-16 pt-4 md:pt-12 pb-4">
+        <div className="flex flex-col">
+          <motion.img
+            src={logo}
+            alt="Pequeno logo"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+            className="h-4 w-4 mb-1"
+          />
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
+            className="text-5xl font-bold tracking-tighter md:text-xl"
+          >
+            Pequeno
+          </motion.h1>
+        </div>
+      </header>
 
       {/* About */}
-      <motion.p
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="text-xs text-muted-foreground leading-relaxed max-w-[50ch] text-center mb-12"
+        className="px-8 md:px-16 pb-24"
       >
-        From Portuguese: small. Not a measure of ambition, but of approach: focused, precise, nimble. A design practice dedicated to shaping thoughtful and beautiful brand identities. Working closely with founders and with strategy agencies that need sharp, reliable execution. From São Paulo, working worldwide.
-      </motion.p>
-
-      {/* Tetris — always visible, centered */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="w-full flex justify-center"
-      >
-        <PulgaTetris open={showGame} onClose={() => setShowGame(false)} inline />
+        <p className="text-xs text-muted-foreground leading-relaxed max-w-[50ch]">
+          From Portuguese: small. Not a measure of ambition, but of approach: focused, precise, nimble. A design practice dedicated to shaping thoughtful and beautiful brand identities. Working closely with founders and with strategy agencies that need sharp, reliable execution. From São Paulo, working worldwide.
+        </p>
       </motion.div>
+
+      {/* Tetris — centered in remaining space */}
+      <div className="flex-1 flex items-center justify-center px-8 pb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <PulgaTetris open={showGame} onClose={() => setShowGame(false)} inline />
+        </motion.div>
+      </div>
     </div>
   );
 };
