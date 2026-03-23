@@ -278,6 +278,24 @@ const PulgaTetris = ({ open, onClose, inline = false }: PulgaTetrisProps) => {
     };
   }, [open, drawPulga]);
 
+  if (inline) {
+    return open ? (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative"
+      >
+        <div className="absolute -top-8 left-0 right-0 flex items-center justify-center">
+          <p className="text-[9px] uppercase tracking-tight text-muted-foreground font-sans">
+            ← → move &nbsp; ↑ rotate &nbsp; ↓ descend &nbsp; space drop
+          </p>
+        </div>
+        <canvas ref={canvasRef} style={{ width: CW, height: CH, display: 'block' }} />
+      </motion.div>
+    ) : null;
+  }
+
   return (
     <AnimatePresence>
       {open && (
