@@ -47,7 +47,7 @@ const Index = () => {
       </motion.div>
 
       {/* Tetris — centered in remaining space */}
-      <div className="flex-1 flex items-center justify-center px-8 pb-16">
+      <div className="flex-1 flex items-center px-8 md:px-16 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
