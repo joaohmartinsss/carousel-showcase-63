@@ -35,7 +35,7 @@ const Index = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-sm font-bold tracking-tighter mt-1 mb-12"
         >
-          Pequeno is dropping soon.
+          Dropping soon.
         </motion.p>
 
         <motion.div
