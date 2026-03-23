@@ -33,7 +33,7 @@ const Index = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-sm font-bold tracking-tighter mt-1 mb-8"
+          className="text-sm font-bold tracking-tighter mt-1 mb-12"
         >
           Pequeno is dropping soon.
         </motion.p>
