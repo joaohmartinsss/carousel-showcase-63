@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 interface PulgaTetrisProps {
   open: boolean;
   onClose: () => void;
+  inline?: boolean;
 }
 
 const COLS = 10, ROWS = 18, CELL = 32;
