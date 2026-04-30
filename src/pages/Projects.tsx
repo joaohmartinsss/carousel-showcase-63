@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import PulgaTetris from "@/components/PulgaTetris";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import logo from "@/assets/logo.svg";
 import calendarIcon from "@/assets/calendar.svg";
+import { supabase } from "@/integrations/supabase/client";
 
 import project1a from "@/assets/project-1a.jpg";
 import project1b from "@/assets/project-1b.jpg";
@@ -18,35 +19,43 @@ import project4a from "@/assets/project-4a.jpg";
 import project4b from "@/assets/project-4b.jpg";
 import project4c from "@/assets/project-4c.jpg";
 
-const projects = [
-  {
-    title: "Más Group",
-    index: "01",
-    role: "BRAND IDENTITY",
-    images: [project1a, project1b, project1c],
-  },
-  {
-    title: "Arcway",
-    index: "02",
-    role: "BRAND IDENTITY",
-    images: [project2a, project2b, project2c],
-  },
-  {
-    title: "Entelo",
-    index: "03",
-    role: "BRAND IDENTITY",
-    images: [project3a, project3b, project3c],
-  },
-  {
-    title: "Tino",
-    index: "04",
-    role: "BRAND IDENTITY",
-    images: [project4a, project4b, project4c],
-  },
+interface ProjectData {
+  title: string;
+  index: string;
+  role: string;
+  images: string[];
+}
+
+const seedProjects: ProjectData[] = [
+  { title: "Más Group", index: "01", role: "BRAND IDENTITY", images: [project1a, project1b, project1c] },
+  { title: "Arcway", index: "02", role: "BRAND IDENTITY", images: [project2a, project2b, project2c] },
+  { title: "Entelo", index: "03", role: "BRAND IDENTITY", images: [project3a, project3b, project3c] },
+  { title: "Tino", index: "04", role: "BRAND IDENTITY", images: [project4a, project4b, project4c] },
 ];
 
 const Projects = () => {
   const [showGame, setShowGame] = useState(false);
+  const [projects, setProjects] = useState<ProjectData[]>(seedProjects);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from("projects")
+        .select("title, role, images, sort_order")
+        .order("sort_order", { ascending: true });
+      if (data && data.length > 0) {
+        setProjects(
+          data.map((p, i) => ({
+            title: p.title,
+            role: p.role || "",
+            images: p.images || [],
+            index: String(i + 1).padStart(2, "0"),
+          }))
+        );
+      }
+    })();
+  }, []);
+
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
       <motion.nav
