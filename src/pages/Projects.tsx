@@ -35,6 +35,27 @@ const seedProjects: ProjectData[] = [
 
 const Projects = () => {
   const [showGame, setShowGame] = useState(false);
+  const [projects, setProjects] = useState<ProjectData[]>(seedProjects);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from("projects")
+        .select("title, role, images, sort_order")
+        .order("sort_order", { ascending: true });
+      if (data && data.length > 0) {
+        setProjects(
+          data.map((p, i) => ({
+            title: p.title,
+            role: p.role || "",
+            images: p.images || [],
+            index: String(i + 1).padStart(2, "0"),
+          }))
+        );
+      }
+    })();
+  }, []);
+
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
       <motion.nav
