@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { Trash2, Plus, ArrowUp, ArrowDown, X } from "lucide-react";
+import { Trash2, Plus, ArrowUp, ArrowDown, X, GripVertical, Check } from "lucide-react";
 
 interface Project {
   id: string;
@@ -20,6 +20,8 @@ const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [dirty, setDirty] = useState<Record<string, boolean>>({});
+  const [dragId, setDragId] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "Admin — Pequeno";
@@ -52,6 +54,7 @@ const Admin = () => {
       return;
     }
     setProjects(data || []);
+    setDirty({});
   };
 
   const handleSignOut = async () => {
@@ -74,10 +77,24 @@ const Admin = () => {
     await loadProjects();
   };
 
-  const handleUpdate = async (id: string, patch: Partial<Project>) => {
-    const { error } = await supabase.from("projects").update(patch).eq("id", id);
-    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
-    await loadProjects();
+  const handleSave = async (id: string) => {
+    const p = projects.find((x) => x.id === id);
+    if (!p) return;
+    const { error } = await supabase
+      .from("projects")
+      .update({ title: p.title, role: p.role, images: p.images })
+      .eq("id", id);
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+      return;
+    }
+    setDirty((d) => ({ ...d, [id]: false }));
+    toast({ title: "Salvo" });
+  };
+
+  const updateLocal = (id: string, patch: Partial<Project>) => {
+    setProjects((prev) => prev.map((x) => (x.id === id ? { ...x, ...patch } : x)));
+    setDirty((d) => ({ ...d, [id]: true }));
   };
 
   const handleDelete = async (id: string) => {
@@ -87,14 +104,41 @@ const Admin = () => {
     await loadProjects();
   };
 
+  const persistOrder = async (ordered: Project[]) => {
+    // Update sort_order for all in one go
+    const updates = ordered.map((p, i) =>
+      supabase.from("projects").update({ sort_order: i + 1 }).eq("id", p.id)
+    );
+    await Promise.all(updates);
+    await loadProjects();
+  };
+
   const handleMove = async (id: string, dir: -1 | 1) => {
     const idx = projects.findIndex((p) => p.id === id);
-    const swap = projects[idx + dir];
-    if (!swap) return;
-    const a = projects[idx];
-    await supabase.from("projects").update({ sort_order: swap.sort_order }).eq("id", a.id);
-    await supabase.from("projects").update({ sort_order: a.sort_order }).eq("id", swap.id);
-    await loadProjects();
+    const target = idx + dir;
+    if (target < 0 || target >= projects.length) return;
+    const next = [...projects];
+    [next[idx], next[target]] = [next[target], next[idx]];
+    setProjects(next);
+    await persistOrder(next);
+  };
+
+  const handleDragStart = (id: string) => setDragId(id);
+  const handleDragOver = (e: React.DragEvent, overId: string) => {
+    e.preventDefault();
+    if (!dragId || dragId === overId) return;
+    const fromIdx = projects.findIndex((p) => p.id === dragId);
+    const toIdx = projects.findIndex((p) => p.id === overId);
+    if (fromIdx < 0 || toIdx < 0) return;
+    const next = [...projects];
+    const [moved] = next.splice(fromIdx, 1);
+    next.splice(toIdx, 0, moved);
+    setProjects(next);
+  };
+  const handleDragEnd = async () => {
+    if (!dragId) return;
+    setDragId(null);
+    await persistOrder(projects);
   };
 
   const handleUpload = async (projectId: string, files: FileList | null) => {
@@ -113,13 +157,17 @@ const Admin = () => {
       const { data } = supabase.storage.from("project-images").getPublicUrl(path);
       newUrls.push(data.publicUrl);
     }
-    await handleUpdate(projectId, { images: [...project.images, ...newUrls] });
+    const updatedImages = [...project.images, ...newUrls];
+    updateLocal(projectId, { images: updatedImages });
+    // Auto-persist images immediately so uploads aren't lost
+    await supabase.from("projects").update({ images: updatedImages }).eq("id", projectId);
+    toast({ title: "Imagens adicionadas" });
   };
 
-  const handleRemoveImage = async (projectId: string, url: string) => {
+  const handleRemoveImage = (projectId: string, url: string) => {
     const project = projects.find((p) => p.id === projectId);
     if (!project) return;
-    await handleUpdate(projectId, { images: project.images.filter((u) => u !== url) });
+    updateLocal(projectId, { images: project.images.filter((u) => u !== url) });
   };
 
   const handleMakeMeAdmin = async () => {
@@ -159,37 +207,64 @@ const Admin = () => {
         </div>
       </header>
 
-      <div className="space-y-8">
+      <p className="text-xs text-muted-foreground mb-6">
+        Arraste pelo ícone <GripVertical className="inline h-3 w-3" /> para reordenar. Não esqueça de clicar em Salvar após editar texto ou remover imagens.
+      </p>
+
+      <div className="space-y-4">
         {projects.length === 0 && (
           <p className="text-sm text-muted-foreground">Nenhum projeto ainda. Clique em "Novo" para começar.</p>
         )}
         {projects.map((p, i) => (
-          <div key={p.id} className="border border-border p-6 space-y-4">
+          <div
+            key={p.id}
+            onDragOver={(e) => handleDragOver(e, p.id)}
+            className={`border border-border p-6 space-y-4 bg-background transition-opacity ${dragId === p.id ? "opacity-50" : ""}`}
+          >
             <div className="flex justify-between items-start gap-4">
+              <div
+                draggable
+                onDragStart={() => handleDragStart(p.id)}
+                onDragEnd={handleDragEnd}
+                className="pt-2 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
+                title="Arraste para reordenar"
+              >
+                <GripVertical className="h-5 w-5" />
+              </div>
+
               <div className="flex-1 space-y-2">
+                <div className="text-xs text-muted-foreground">#{i + 1}</div>
                 <Input
                   value={p.title}
-                  onChange={(e) => setProjects(projects.map(x => x.id === p.id ? { ...x, title: e.target.value } : x))}
-                  onBlur={(e) => handleUpdate(p.id, { title: e.target.value })}
+                  onChange={(e) => updateLocal(p.id, { title: e.target.value })}
                   placeholder="Título"
                 />
                 <Input
                   value={p.role || ""}
-                  onChange={(e) => setProjects(projects.map(x => x.id === p.id ? { ...x, role: e.target.value } : x))}
-                  onBlur={(e) => handleUpdate(p.id, { role: e.target.value })}
+                  onChange={(e) => updateLocal(p.id, { role: e.target.value })}
                   placeholder="Função (ex: BRAND IDENTITY)"
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <Button size="icon" variant="ghost" onClick={() => handleMove(p.id, -1)} disabled={i === 0}>
-                  <ArrowUp className="h-4 w-4" />
+                <Button
+                  size="sm"
+                  onClick={() => handleSave(p.id)}
+                  disabled={!dirty[p.id]}
+                  variant={dirty[p.id] ? "default" : "outline"}
+                >
+                  <Check className="h-4 w-4 mr-1" /> Salvar
                 </Button>
-                <Button size="icon" variant="ghost" onClick={() => handleMove(p.id, 1)} disabled={i === projects.length - 1}>
-                  <ArrowDown className="h-4 w-4" />
-                </Button>
-                <Button size="icon" variant="ghost" onClick={() => handleDelete(p.id)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div className="flex gap-1">
+                  <Button size="icon" variant="ghost" onClick={() => handleMove(p.id, -1)} disabled={i === 0}>
+                    <ArrowUp className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={() => handleMove(p.id, 1)} disabled={i === projects.length - 1}>
+                    <ArrowDown className="h-4 w-4" />
+                  </Button>
+                  <Button size="icon" variant="ghost" onClick={() => handleDelete(p.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
 
