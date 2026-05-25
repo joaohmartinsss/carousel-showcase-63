@@ -367,6 +367,72 @@ const Admin = () => {
           </div>
         ))}
       </div>
+
+      <header className="flex justify-between items-center mt-20 mb-6">
+        <h1 className="text-2xl font-bold tracking-tighter">CMS — Offerings</h1>
+      </header>
+      <p className="text-xs text-muted-foreground mb-6">
+        Edite tagline, link do "Book a call" e imagens (1920×1080 recomendado) para cada serviço.
+      </p>
+
+      <div className="space-y-4">
+        {offerings.map((o) => (
+          <div key={o.id} className="border border-border p-6 space-y-4 bg-background">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex-1 space-y-2">
+                <div className="text-xs uppercase tracking-tight text-muted-foreground">
+                  {o.title} — /{o.slug}
+                </div>
+                <Input
+                  value={o.tagline || ""}
+                  onChange={(e) => updateOfferingLocal(o.id, { tagline: e.target.value })}
+                  placeholder="Tagline"
+                />
+                <Input
+                  value={o.cta_url || ""}
+                  onChange={(e) => updateOfferingLocal(o.id, { cta_url: e.target.value })}
+                  placeholder="Book a call URL (https://cal.com/...)"
+                />
+              </div>
+              <Button
+                size="sm"
+                onClick={() => handleSaveOffering(o.id)}
+                disabled={!offeringDirty[o.id]}
+                variant={offeringDirty[o.id] ? "default" : "outline"}
+              >
+                <Check className="h-4 w-4 mr-1" /> Salvar
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {o.images.map((url) => (
+                <div key={url} className="relative group bg-muted" style={{ aspectRatio: "1920 / 1080" }}>
+                  <img src={url} className="w-full h-full object-cover" alt="" />
+                  <button
+                    onClick={() => handleRemoveOfferingImage(o.id, url)}
+                    className="absolute top-1 right-1 bg-background/80 p-1 opacity-0 group-hover:opacity-100 transition"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <label
+                className="border border-dashed border-border flex items-center justify-center cursor-pointer text-xs text-muted-foreground hover:border-foreground hover:text-foreground transition"
+                style={{ aspectRatio: "1920 / 1080" }}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => handleOfferingUpload(o.id, e.target.files)}
+                />
+                + Imagens 1920×1080
+              </label>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
