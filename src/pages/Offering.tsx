@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.svg";
@@ -22,7 +22,8 @@ interface OfferingData {
 }
 
 const Offering = () => {
-  const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const slug = location.pathname.replace(/^\//, "");
   const [offering, setOffering] = useState<OfferingData | null>(null);
   const [loading, setLoading] = useState(true);
 
