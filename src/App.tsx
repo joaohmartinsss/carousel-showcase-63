@@ -23,7 +23,7 @@ const App = () => (
         <CustomCursor />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Projects />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects_02" element={<Projects02 />} />
             <Route path="/auth" element={<Auth />} />
