@@ -14,12 +14,23 @@ interface Project {
   sort_order: number;
 }
 
+interface Offering {
+  id: string;
+  slug: string;
+  title: string;
+  tagline: string | null;
+  images: string[];
+  cta_url: string | null;
+}
+
 const Admin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [offerings, setOfferings] = useState<Offering[]>([]);
+  const [offeringDirty, setOfferingDirty] = useState<Record<string, boolean>>({});
   const [dirty, setDirty] = useState<Record<string, boolean>>({});
   const [dragId, setDragId] = useState<string | null>(null);
 
@@ -40,9 +51,71 @@ const Admin = () => {
         .maybeSingle();
       setIsAdmin(!!roleData);
       await loadProjects();
+      await loadOfferings();
       setLoading(false);
     })();
   }, [navigate]);
+
+  const loadOfferings = async () => {
+    const { data, error } = await supabase
+      .from("offerings")
+      .select("id, slug, title, tagline, images, cta_url")
+      .order("sort_order", { ascending: true });
+    if (error) {
+      toast({ title: "Erro ao carregar offerings", description: error.message, variant: "destructive" });
+      return;
+    }
+    setOfferings((data || []).map((o) => ({ ...o, images: o.images || [] })));
+    setOfferingDirty({});
+  };
+
+  const updateOfferingLocal = (id: string, patch: Partial<Offering>) => {
+    setOfferings((prev) => prev.map((x) => (x.id === id ? { ...x, ...patch } : x)));
+    setOfferingDirty((d) => ({ ...d, [id]: true }));
+  };
+
+  const handleSaveOffering = async (id: string) => {
+    const o = offerings.find((x) => x.id === id);
+    if (!o) return;
+    const { error } = await supabase
+      .from("offerings")
+      .update({ tagline: o.tagline, cta_url: o.cta_url, images: o.images })
+      .eq("id", id);
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+      return;
+    }
+    setOfferingDirty((d) => ({ ...d, [id]: false }));
+    toast({ title: "Salvo" });
+  };
+
+  const handleOfferingUpload = async (offeringId: string, files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const o = offerings.find((x) => x.id === offeringId);
+    if (!o) return;
+    const newUrls: string[] = [];
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop();
+      const path = `offerings/${o.slug}/${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from("project-images").upload(path, file);
+      if (error) {
+        toast({ title: "Upload falhou", description: error.message, variant: "destructive" });
+        continue;
+      }
+      const { data } = supabase.storage.from("project-images").getPublicUrl(path);
+      newUrls.push(data.publicUrl);
+    }
+    const updatedImages = [...o.images, ...newUrls];
+    updateOfferingLocal(offeringId, { images: updatedImages });
+    await supabase.from("offerings").update({ images: updatedImages }).eq("id", offeringId);
+    toast({ title: "Imagens adicionadas" });
+  };
+
+  const handleRemoveOfferingImage = (offeringId: string, url: string) => {
+    const o = offerings.find((x) => x.id === offeringId);
+    if (!o) return;
+    updateOfferingLocal(offeringId, { images: o.images.filter((u) => u !== url) });
+  };
 
   const loadProjects = async () => {
     const { data, error } = await supabase
