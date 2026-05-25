@@ -14,12 +14,23 @@ interface Project {
   sort_order: number;
 }
 
+interface Offering {
+  id: string;
+  slug: string;
+  title: string;
+  tagline: string | null;
+  images: string[];
+  cta_url: string | null;
+}
+
 const Admin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [offerings, setOfferings] = useState<Offering[]>([]);
+  const [offeringDirty, setOfferingDirty] = useState<Record<string, boolean>>({});
   const [dirty, setDirty] = useState<Record<string, boolean>>({});
   const [dragId, setDragId] = useState<string | null>(null);
 
@@ -40,9 +51,71 @@ const Admin = () => {
         .maybeSingle();
       setIsAdmin(!!roleData);
       await loadProjects();
+      await loadOfferings();
       setLoading(false);
     })();
   }, [navigate]);
+
+  const loadOfferings = async () => {
+    const { data, error } = await supabase
+      .from("offerings")
+      .select("id, slug, title, tagline, images, cta_url")
+      .order("sort_order", { ascending: true });
+    if (error) {
+      toast({ title: "Erro ao carregar offerings", description: error.message, variant: "destructive" });
+      return;
+    }
+    setOfferings((data || []).map((o) => ({ ...o, images: o.images || [] })));
+    setOfferingDirty({});
+  };
+
+  const updateOfferingLocal = (id: string, patch: Partial<Offering>) => {
+    setOfferings((prev) => prev.map((x) => (x.id === id ? { ...x, ...patch } : x)));
+    setOfferingDirty((d) => ({ ...d, [id]: true }));
+  };
+
+  const handleSaveOffering = async (id: string) => {
+    const o = offerings.find((x) => x.id === id);
+    if (!o) return;
+    const { error } = await supabase
+      .from("offerings")
+      .update({ tagline: o.tagline, cta_url: o.cta_url, images: o.images })
+      .eq("id", id);
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+      return;
+    }
+    setOfferingDirty((d) => ({ ...d, [id]: false }));
+    toast({ title: "Salvo" });
+  };
+
+  const handleOfferingUpload = async (offeringId: string, files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const o = offerings.find((x) => x.id === offeringId);
+    if (!o) return;
+    const newUrls: string[] = [];
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop();
+      const path = `offerings/${o.slug}/${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from("project-images").upload(path, file);
+      if (error) {
+        toast({ title: "Upload falhou", description: error.message, variant: "destructive" });
+        continue;
+      }
+      const { data } = supabase.storage.from("project-images").getPublicUrl(path);
+      newUrls.push(data.publicUrl);
+    }
+    const updatedImages = [...o.images, ...newUrls];
+    updateOfferingLocal(offeringId, { images: updatedImages });
+    await supabase.from("offerings").update({ images: updatedImages }).eq("id", offeringId);
+    toast({ title: "Imagens adicionadas" });
+  };
+
+  const handleRemoveOfferingImage = (offeringId: string, url: string) => {
+    const o = offerings.find((x) => x.id === offeringId);
+    if (!o) return;
+    updateOfferingLocal(offeringId, { images: o.images.filter((u) => u !== url) });
+  };
 
   const loadProjects = async () => {
     const { data, error } = await supabase
@@ -289,6 +362,72 @@ const Admin = () => {
                   onChange={(e) => handleUpload(p.id, e.target.files)}
                 />
                 + Imagens
+              </label>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <header className="flex justify-between items-center mt-20 mb-6">
+        <h1 className="text-2xl font-bold tracking-tighter">CMS — Offerings</h1>
+      </header>
+      <p className="text-xs text-muted-foreground mb-6">
+        Edite tagline, link do "Book a call" e imagens (1920×1080 recomendado) para cada serviço.
+      </p>
+
+      <div className="space-y-4">
+        {offerings.map((o) => (
+          <div key={o.id} className="border border-border p-6 space-y-4 bg-background">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex-1 space-y-2">
+                <div className="text-xs uppercase tracking-tight text-muted-foreground">
+                  {o.title} — /{o.slug}
+                </div>
+                <Input
+                  value={o.tagline || ""}
+                  onChange={(e) => updateOfferingLocal(o.id, { tagline: e.target.value })}
+                  placeholder="Tagline"
+                />
+                <Input
+                  value={o.cta_url || ""}
+                  onChange={(e) => updateOfferingLocal(o.id, { cta_url: e.target.value })}
+                  placeholder="Book a call URL (https://cal.com/...)"
+                />
+              </div>
+              <Button
+                size="sm"
+                onClick={() => handleSaveOffering(o.id)}
+                disabled={!offeringDirty[o.id]}
+                variant={offeringDirty[o.id] ? "default" : "outline"}
+              >
+                <Check className="h-4 w-4 mr-1" /> Salvar
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              {o.images.map((url) => (
+                <div key={url} className="relative group bg-muted" style={{ aspectRatio: "1920 / 1080" }}>
+                  <img src={url} className="w-full h-full object-cover" alt="" />
+                  <button
+                    onClick={() => handleRemoveOfferingImage(o.id, url)}
+                    className="absolute top-1 right-1 bg-background/80 p-1 opacity-0 group-hover:opacity-100 transition"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <label
+                className="border border-dashed border-border flex items-center justify-center cursor-pointer text-xs text-muted-foreground hover:border-foreground hover:text-foreground transition"
+                style={{ aspectRatio: "1920 / 1080" }}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => handleOfferingUpload(o.id, e.target.files)}
+                />
+                + Imagens 1920×1080
               </label>
             </div>
           </div>

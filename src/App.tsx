@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CursorProvider } from "./components/CursorContext";
 import Projects from "./pages/Projects.tsx";
 import Projects02 from "./pages/Projects02.tsx";
+import Offering from "./pages/Offering.tsx";
 import Auth from "./pages/Auth.tsx";
 import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -25,6 +26,8 @@ const App = () => (
             <Route path="/" element={<Projects />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects_02" element={<Projects02 />} />
+            <Route path="/brand-sprints" element={<Offering />} />
+            <Route path="/inner-circle" element={<Offering />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
