@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import PulgaTetris from "@/components/PulgaTetris";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import logo from "@/assets/logo.svg";
 import calendarIcon from "@/assets/calendar.svg";
@@ -34,7 +33,6 @@ const seedProjects: ProjectData[] = [
 ];
 
 const Projects = () => {
-  const [showGame, setShowGame] = useState(false);
   const [projects, setProjects] = useState<ProjectData[]>(seedProjects);
 
   useEffect(() => {
@@ -96,7 +94,6 @@ const Projects = () => {
           <motion.img
             src={logo}
             alt="Pequeno logo"
-            onClick={() => setShowGame(true)}
             style={{ cursor: "default" }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -200,7 +197,6 @@ const Projects = () => {
           </div>
         </div>
       </footer>
-      <PulgaTetris open={showGame} onClose={() => setShowGame(false)} />
     </div>
   );
 };
