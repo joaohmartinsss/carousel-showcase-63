@@ -63,12 +63,6 @@ const Projects = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="md:hidden px-8 pt-8 pb-4 flex justify-between text-xs uppercase tracking-tight font-sans font-normal text-muted-foreground"
       >
-        <Link to="/brand-sprints" className="hover:text-foreground transition-colors duration-300">
-          Brand Sprints
-        </Link>
-        <Link to="/inner-circle" className="hover:text-foreground transition-colors duration-300">
-          Inner Circle
-        </Link>
         <a
           href="https://cal.com"
           target="_blank"
@@ -106,12 +100,6 @@ const Projects = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="hidden md:flex gap-4 text-xs uppercase tracking-tight pt-4 font-sans font-normal text-muted-foreground"
         >
-          <Link to="/brand-sprints" className="hover:text-foreground transition-colors duration-300">
-            Brand Sprints
-          </Link>
-          <Link to="/inner-circle" className="hover:text-foreground transition-colors duration-300">
-            Inner Circle
-          </Link>
           <a
             href="https://cal.com"
             target="_blank"
