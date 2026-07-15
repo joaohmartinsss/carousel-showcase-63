@@ -119,7 +119,10 @@ const Projects = () => {
         className="px-8 md:px-16 pb-24"
       >
         <p className="text-xs text-muted-foreground leading-relaxed max-w-[50ch]">
-          From Portuguese: small. Not a measure of ambition, but of approach: focused, precise, nimble. A design practice dedicated to shaping thoughtful and beautiful brand identities. Working closely with founders and with strategy agencies that need sharp, reliable execution. From São Paulo, working worldwide.
+          Pequeno means small. That's the point.
+          <br />
+          <br />
+          We design brand identities. Senior work, no layers between you and the person doing it. Working with founders and strategy agencies, from São Paulo to anywhere.
         </p>
       </motion.div>
 
