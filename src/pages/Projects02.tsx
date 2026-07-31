@@ -1,20 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { cdnImage, cdnSrcSet } from "@/lib/image";
 import logo from "@/assets/logo.svg";
-
-import project1a from "@/assets/project-1a.jpg";
-import project1b from "@/assets/project-1b.jpg";
-import project1c from "@/assets/project-1c.jpg";
-import project2a from "@/assets/project-2a.jpg";
-import project2b from "@/assets/project-2b.jpg";
-import project2c from "@/assets/project-2c.jpg";
-import project3a from "@/assets/project-3a.jpg";
-import project3b from "@/assets/project-3b.jpg";
-import project3c from "@/assets/project-3c.jpg";
-import project4a from "@/assets/project-4a.jpg";
-import project4b from "@/assets/project-4b.jpg";
-import project4c from "@/assets/project-4c.jpg";
 
 interface ProjectRow {
   title: string;
@@ -22,33 +10,30 @@ interface ProjectRow {
   images: string[];
 }
 
-const seed: ProjectRow[] = [
-  { title: "Más Group", role: "Brand Identity", images: [project1a, project1b, project1c] },
-  { title: "Arcway", role: "Brand Identity", images: [project2a, project2b, project2c] },
-  { title: "Entelo", role: "Brand Identity", images: [project3a, project3b, project3c] },
-  { title: "Tino", role: "Brand Identity", images: [project4a, project4b, project4c] },
-];
-
 const Projects02 = () => {
-  const [projects, setProjects] = useState<ProjectRow[]>(seed);
+  const [projects, setProjects] = useState<ProjectRow[]>([]);
 
   useEffect(() => {
+    let active = true;
     (async () => {
       const { data } = await supabase
         .from("projects")
         .select("title, role, images, sort_order")
         .order("sort_order", { ascending: true });
-      if (data && data.length > 0) {
-        setProjects(
-          data.map((p) => ({
-            title: p.title,
-            role: p.role || "",
-            images: p.images || [],
-          }))
-        );
-      }
+      if (!active || !data) return;
+      setProjects(
+        data.map((p) => ({
+          title: p.title,
+          role: p.role || "",
+          images: p.images || [],
+        }))
+      );
     })();
+    return () => {
+      active = false;
+    };
   }, []);
+
 
   const allImages = projects.flatMap((p) =>
     p.images.map((src, i) => ({ src, title: p.title, role: p.role, isFirst: i === 0 }))
@@ -141,11 +126,16 @@ const Projects02 = () => {
                 }`}
               >
                 <img
-                  src={item.src}
+                  src={cdnImage(item.src, 960)}
+                  srcSet={cdnSrcSet(item.src, [480, 720, 960, 1280])}
+                  sizes="(min-width: 768px) 35vw, 100vw"
                   alt={item.title}
-                  loading="lazy"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  {...{ fetchpriority: i === 0 ? "high" : i < 3 ? "auto" : "low" }}
                   className="w-full h-auto block"
                 />
+
                 {item.isFirst && (
                   <figcaption className="absolute left-3 bottom-3 text-[10px] uppercase tracking-wider text-background/90 bg-foreground/70 backdrop-blur px-2 py-1 rounded">
                     {item.title} — {item.role}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { cdnImage } from "@/lib/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
@@ -344,7 +345,7 @@ const Admin = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {p.images.map((url) => (
                 <div key={url} className="relative group aspect-square bg-muted">
-                  <img src={url} className="w-full h-full object-cover" alt="" />
+                  <img src={cdnImage(url, 240, 60)} className="w-full h-full object-cover" alt="" loading="lazy" decoding="async" />
                   <button
                     onClick={() => handleRemoveImage(p.id, url)}
                     className="absolute top-1 right-1 bg-background/80 p-1 opacity-0 group-hover:opacity-100 transition"
@@ -407,7 +408,7 @@ const Admin = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {o.images.map((url) => (
                 <div key={url} className="relative group bg-muted" style={{ aspectRatio: "1920 / 1080" }}>
-                  <img src={url} className="w-full h-full object-cover" alt="" />
+                  <img src={cdnImage(url, 240, 60)} className="w-full h-full object-cover" alt="" loading="lazy" decoding="async" />
                   <button
                     onClick={() => handleRemoveOfferingImage(o.id, url)}
                     className="absolute top-1 right-1 bg-background/80 p-1 opacity-0 group-hover:opacity-100 transition"

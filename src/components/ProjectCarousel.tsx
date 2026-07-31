@@ -1,16 +1,21 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cdnImage, cdnSrcSet } from "@/lib/image";
 import { useCursorDirection } from "./CursorContext";
+
 
 interface ProjectCarouselProps {
   title: string;
   index: string;
   role?: string;
   images: string[];
+  /** Marks the first image as the LCP candidate (only for the first carousel). */
+  priority?: boolean;
 }
 
-const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) => {
+
+const ProjectCarousel = ({ title, index, role, images, priority = false }: ProjectCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -149,7 +154,7 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
             
             {images.map((src, i) =>
             <div
-              key={i}
+              key={src || i}
               className="w-[85vw] shrink-0 snap-start bg-muted"
               onClick={(e) => {
                 if (isMobile) {
@@ -159,13 +164,18 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
               }}>
               
                 <img
-                src={src}
+                src={cdnImage(src, 1280)}
+                srcSet={cdnSrcSet(src)}
+                sizes="85vw"
                 className="w-full h-auto block transition-all duration-700"
                 alt={`${title} ${i + 1}`}
-                loading="lazy" />
+                decoding="async"
+                loading={priority && i === 0 ? "eager" : "lazy"}
+                {...{ fetchpriority: priority && i === 0 ? "high" : i < 2 ? "auto" : "low" }} />
               
               </div>
             )}
+
             {/* Peek spacer */}
             <div className="w-[10vw] shrink-0" />
           </div>
@@ -200,7 +210,7 @@ const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) =
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              src={lightboxSrc}
+              src={cdnImage(lightboxSrc, 1920, 80)}
               alt={title}
               className="max-w-full max-h-full object-contain" />
           </motion.div>
