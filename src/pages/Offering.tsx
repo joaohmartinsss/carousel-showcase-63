@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.svg";
+import { cdnImage, cdnSrcSet } from "@/lib/image";
+
 import calendarIcon from "@/assets/calendar.svg";
 
 interface Section {
