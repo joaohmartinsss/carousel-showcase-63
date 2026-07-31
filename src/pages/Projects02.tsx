@@ -126,11 +126,16 @@ const Projects02 = () => {
                 }`}
               >
                 <img
-                  src={item.src}
+                  src={cdnImage(item.src, 960)}
+                  srcSet={cdnSrcSet(item.src, [480, 720, 960, 1280])}
+                  sizes="(min-width: 768px) 35vw, 100vw"
                   alt={item.title}
-                  loading="lazy"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={i === 0 ? "high" : i < 3 ? "auto" : "low"}
                   className="w-full h-auto block"
                 />
+
                 {item.isFirst && (
                   <figcaption className="absolute left-3 bottom-3 text-[10px] uppercase tracking-wider text-background/90 bg-foreground/70 backdrop-blur px-2 py-1 rounded">
                     {item.title} — {item.role}
