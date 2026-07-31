@@ -154,7 +154,7 @@ const ProjectCarousel = ({ title, index, role, images, priority = false }: Proje
             
             {images.map((src, i) =>
             <div
-              key={i}
+              key={src || i}
               className="w-[85vw] shrink-0 snap-start bg-muted"
               onClick={(e) => {
                 if (isMobile) {
@@ -164,13 +164,18 @@ const ProjectCarousel = ({ title, index, role, images, priority = false }: Proje
               }}>
               
                 <img
-                src={src}
+                src={cdnImage(src, 1280)}
+                srcSet={cdnSrcSet(src)}
+                sizes="85vw"
                 className="w-full h-auto block transition-all duration-700"
                 alt={`${title} ${i + 1}`}
-                loading="lazy" />
+                decoding="async"
+                loading={priority && i === 0 ? "eager" : "lazy"}
+                fetchPriority={priority && i === 0 ? "high" : i < 2 ? "auto" : "low"} />
               
               </div>
             )}
+
             {/* Peek spacer */}
             <div className="w-[10vw] shrink-0" />
           </div>
