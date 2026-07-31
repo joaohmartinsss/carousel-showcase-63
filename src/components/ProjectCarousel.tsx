@@ -15,7 +15,7 @@ interface ProjectCarouselProps {
 }
 
 
-const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) => {
+const ProjectCarousel = ({ title, index, role, images, priority = false }: ProjectCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
