@@ -110,16 +110,18 @@ const Projects = () => {
       </motion.div>
 
       <div id="work">
-        {projects.map((project) => (
+        {projects.map((project, i) => (
           <ProjectCarousel
-            key={project.index}
+            key={project.title}
             title={project.title}
             index={project.index}
             role={project.role}
             images={project.images}
+            priority={i === 0}
           />
         ))}
       </div>
+
 
       <footer className="px-8 md:px-16 py-16">
         <div className="flex flex-col md:flex-row md:justify-between md:items-end font-sans gap-4">
