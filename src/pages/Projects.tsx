@@ -1,23 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import ProjectCarousel from "@/components/ProjectCarousel";
 import logo from "@/assets/logo.svg";
 import calendarIcon from "@/assets/calendar.svg";
 import { supabase } from "@/integrations/supabase/client";
-
-import project1a from "@/assets/project-1a.jpg";
-import project1b from "@/assets/project-1b.jpg";
-import project1c from "@/assets/project-1c.jpg";
-import project2a from "@/assets/project-2a.jpg";
-import project2b from "@/assets/project-2b.jpg";
-import project2c from "@/assets/project-2c.jpg";
-import project3a from "@/assets/project-3a.jpg";
-import project3b from "@/assets/project-3b.jpg";
-import project3c from "@/assets/project-3c.jpg";
-import project4a from "@/assets/project-4a.jpg";
-import project4b from "@/assets/project-4b.jpg";
-import project4c from "@/assets/project-4c.jpg";
 
 interface ProjectData {
   title: string;
@@ -26,34 +12,31 @@ interface ProjectData {
   images: string[];
 }
 
-const seedProjects: ProjectData[] = [
-  { title: "Más Group", index: "01", role: "BRAND IDENTITY", images: [project1a, project1b, project1c] },
-  { title: "Arcway", index: "02", role: "BRAND IDENTITY", images: [project2a, project2b, project2c] },
-  { title: "Entelo", index: "03", role: "BRAND IDENTITY", images: [project3a, project3b, project3c] },
-  { title: "Tino", index: "04", role: "BRAND IDENTITY", images: [project4a, project4b, project4c] },
-];
-
 const Projects = () => {
-  const [projects, setProjects] = useState<ProjectData[]>(seedProjects);
+  const [projects, setProjects] = useState<ProjectData[]>([]);
 
   useEffect(() => {
+    let active = true;
     (async () => {
       const { data } = await supabase
         .from("projects")
         .select("title, role, images, sort_order")
         .order("sort_order", { ascending: true });
-      if (data && data.length > 0) {
-        setProjects(
-          data.map((p, i) => ({
-            title: p.title,
-            role: p.role || "",
-            images: p.images || [],
-            index: String(i + 1).padStart(2, "0"),
-          }))
-        );
-      }
+      if (!active || !data) return;
+      setProjects(
+        data.map((p, i) => ({
+          title: p.title,
+          role: p.role || "",
+          images: p.images || [],
+          index: String(i + 1).padStart(2, "0"),
+        }))
+      );
     })();
+    return () => {
+      active = false;
+    };
   }, []);
+
 
   return (
     <div className="w-full max-w-[100vw] overflow-x-hidden">
