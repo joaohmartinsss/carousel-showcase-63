@@ -171,7 +171,7 @@ const ProjectCarousel = ({ title, index, role, images, priority = false }: Proje
                 alt={`${title} ${i + 1}`}
                 decoding="async"
                 loading={priority && i === 0 ? "eager" : "lazy"}
-                fetchPriority={priority && i === 0 ? "high" : i < 2 ? "auto" : "low"} />
+                {...{ fetchpriority: priority && i === 0 ? "high" : i < 2 ? "auto" : "low" }} />
               
               </div>
             )}

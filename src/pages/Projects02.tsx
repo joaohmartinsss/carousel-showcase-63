@@ -132,7 +132,7 @@ const Projects02 = () => {
                   alt={item.title}
                   loading={i === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  fetchPriority={i === 0 ? "high" : i < 3 ? "auto" : "low"}
+                  {...{ fetchpriority: i === 0 ? "high" : i < 3 ? "auto" : "low" }}
                   className="w-full h-auto block"
                 />
 
