@@ -10,7 +10,10 @@ interface ProjectCarouselProps {
   index: string;
   role?: string;
   images: string[];
+  /** Marks the first image as the LCP candidate (only for the first carousel). */
+  priority?: boolean;
 }
+
 
 const ProjectCarousel = ({ title, index, role, images }: ProjectCarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
