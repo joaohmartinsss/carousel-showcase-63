@@ -190,11 +190,15 @@ const Offering = () => {
               style={{ aspectRatio: "1920 / 1080" }}
             >
               <img
-                src={src}
+                src={cdnImage(src, 1280)}
+                srcSet={cdnSrcSet(src, [640, 960, 1280, 1920])}
+                sizes="(min-width: 768px) 90vw, 100vw"
                 alt=""
                 className="w-full h-full object-cover"
                 loading="lazy"
+                decoding="async"
               />
+
             </motion.div>
           ))}
         </section>
