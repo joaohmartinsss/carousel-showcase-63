@@ -210,7 +210,7 @@ const ProjectCarousel = ({ title, index, role, images, priority = false }: Proje
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              src={lightboxSrc}
+              src={cdnImage(lightboxSrc, 1920, 80)}
               alt={title}
               className="max-w-full max-h-full object-contain" />
           </motion.div>
