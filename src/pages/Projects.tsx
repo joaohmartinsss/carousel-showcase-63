@@ -102,10 +102,7 @@ const Projects = () => {
         className="px-8 md:px-16 pb-24"
       >
         <p className="text-xs text-muted-foreground leading-relaxed max-w-[50ch]">
-          Pequeno means small. That's the point.
-          <br />
-          <br />
-          We design brand identities. Senior work, no layers between you and the person doing it. Working with founders and strategy agencies, from São Paulo to anywhere.
+          Pequeno is an independent brand design studio based in São Paulo, creating identities and digital experiences for growing companies and creative teams worldwide.
         </p>
       </motion.div>
 
