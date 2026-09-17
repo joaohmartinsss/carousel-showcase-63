@@ -17,7 +17,7 @@ const Projects = () => {
 
   useEffect(() => {
     let active = true;
-    (async () => {
+    const loadProjects = async () => {
       const { data } = await supabase
         .from("projects")
         .select("title, role, images, sort_order")
@@ -31,9 +31,15 @@ const Projects = () => {
           index: String(i + 1).padStart(2, "0"),
         }))
       );
-    })();
+    };
+
+    void loadProjects();
+    const refreshOnFocus = () => void loadProjects();
+    window.addEventListener("focus", refreshOnFocus);
+
     return () => {
       active = false;
+      window.removeEventListener("focus", refreshOnFocus);
     };
   }, []);
 
