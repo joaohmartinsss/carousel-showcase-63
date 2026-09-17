@@ -7,7 +7,7 @@ const RENDER_PATH = "/storage/v1/render/image/public/";
  * browser supports it) images instead of multi-megabyte originals.
  * Non-storage URLs (or local assets) are returned untouched.
  */
-export function cdnImage(src: string, width: number, quality = 70): string {
+export function cdnImage(src: string, width: number, quality = 88): string {
   if (!src || !src.includes(OBJECT_PATH)) return src;
   const base = src.replace(OBJECT_PATH, RENDER_PATH);
   const sep = base.includes("?") ? "&" : "?";
